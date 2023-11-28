@@ -1,60 +1,50 @@
 class Walker {
-  private int x;
-  private int y;
+  
+  //position
+  private float x;
+  private float y;
+  
+  //noise variable
+  private float tx;
+  private float ty;
+  
+  //color
   private color c;
+  
   Walker()
   {
     x = width/2;
     y = height/2;
-    c = color(255/2, 255/2, 0);
+    
+    tx=0;
+    ty=10000;
+    c = color(0);
   }
   
   void display()
   {
     computeColor();
-    circle(x,y, 2);
+    float size = map(noise(tx/ty), 0, 1, 2, 5); 
+    circle(x,y, size);
   }
   
-  void stepFourDirection()
-  {
-    int choice = int(random(4));
-    switch(choice) {
-      case 0:
-        x++;
-        break;
-      case 1:
-        x--;
-        break;
-      case 2:
-        y++;
-        break;
-      case 3:
-        y--;
-        break;
-      default:
-        break;
-    }
-  }
   
-  void integerStep()
+  void step()
   {
-     int stepsize= randomStepSize();
-    
-     int stepx = int(random(-stepsize, stepsize));
-     int stepy = int(random(-stepsize, stepsize));
-     int tmp_x = x+stepx;
-     int tmp_y = y+stepy;
+     x = map(noise(tx), 0, 1, 0, width); 
+     y = map(noise(ty), 0, 1, 0, height);
      
-     x = (tmp_x) > width ? width : (tmp_x) < 0 ? 0 : tmp_x;
-     y = (tmp_y) > height ? height : (tmp_y) <0 ? 0 : tmp_y;
+     tx +=0.01;
+     ty +=0.01;
   }
   
   void computeColor()
   {
-    int r = x*255/width;
-    int v = y*255/height;
-    c = color(r,v,0);
-    stroke(c);
+    int r = (int) map(noise(tx), 0, 1, 0, 255);
+    int g = (int) map(noise(ty), 0, 1, 0, 255);
+    int b = (int) map(noise(ty+tx), 0, 1, 0, 255);
+    c = color(r,g,b);
+    fill(c);
   }
 }
 

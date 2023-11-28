@@ -12,6 +12,6 @@ void setup()
 
 void draw()
 {
-  w.integerStep();
+  w.step();
   w.display();
 }
